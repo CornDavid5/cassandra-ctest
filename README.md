@@ -7,7 +7,7 @@
 - clone cassandra, `git clone https://github.com/apache/cassandra.git app/cassandra && cd app/cassandra`
 - checkout commit, `git switch cassandra-4.0`
 - apply logging patches, `git apply ../../ctest-logging.patch`
-- build the project, `CASSANDRA_USE_JDK11=true ant clean && ant`
+- build the project, `CASSANDRA_USE_JDK11=true ant clean && CASSANDRA_USE_JDK11=true ant`
 - example test command, `CASSANDRA_USE_JDK11=true ant testsome -Dtest.name=org.apache.cassandra.service.GCInspectorTest -Dtest.methods=ensureStaticFieldsHydrateFromConfig`
 
 ## Note
@@ -17,3 +17,4 @@
 
 ## Challenges
 - Cassandra uses ant to manage the project, therefore, need to modify the given python scripts quiet a lot to run the test in Cassandra.
+- Cassandra doesn't have an uniform get and set API, all get and set methods for each individual config are defined in the `DatabaseDescriptor.java` file, which is a pain to add all the logging.

@@ -68,6 +68,9 @@ CTEST_SUREFIRE_PATH = {
         os.path.join(CTEST_ALLUXIO_DIR, "core/server/proxy", SUREFIRE_SUBDIR),
         os.path.join(CTEST_ALLUXIO_DIR, "core/server/worker", SUREFIRE_SUBDIR),
         os.path.join(CTEST_ALLUXIO_DIR, "core/server/master", SUREFIRE_SUBDIR)
+    ],
+    "cassandra": [
+        os.path.join(CTEST_CASSANDRA_DIR, "build/test/output/*")
     ]
 }
 
@@ -88,5 +91,8 @@ LOCAL_SUREFIRE_PATH = {
     ],
     "alluxio-core": [
         os.path.join("surefire-reports/alluxio-core", LOCAL_SUREFIRE_SUFFIX)
+    ],
+    "cassandra": [
+        os.path.join("surefire-reports/cassandra", LOCAL_SUREFIRE_SUFFIX)
     ]
 }

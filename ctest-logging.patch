@@ -1,12 +1,26 @@
 diff --git a/src/java/org/apache/cassandra/config/YamlConfigurationLoader.java b/src/java/org/apache/cassandra/config/YamlConfigurationLoader.java
-index a8d4695cb0..6fb9a23b3c 100644
+index a8d4695cb0..849b4bdf80 100644
 --- a/src/java/org/apache/cassandra/config/YamlConfigurationLoader.java
 +++ b/src/java/org/apache/cassandra/config/YamlConfigurationLoader.java
-@@ -249,13 +249,17 @@ public class YamlConfigurationLoader implements ConfigurationLoader
+@@ -234,12 +234,15 @@ public class YamlConfigurationLoader implements ConfigurationLoader
+         {
+             final Property result;
+             Map<String, Replacement> typeReplacements = replacements.getOrDefault(type, Collections.emptyMap());
++            String ctestParam = name; //CTEST
++            logger.warn("[CTEST][TYPE] " + type.getName()); //CTEST
+             if (typeReplacements.containsKey(name))
+             {
+                 Replacement replacement = typeReplacements.get(name);
+                 final Property newProperty = super.getProperty(type, replacement.newName);
+                 result = new Property(replacement.oldName, newProperty.getType())
+                 {
++                    private final Logger clogger = LoggerFactory.getLogger(Property.class);
                      @Override
+                     public Class<?>[] getActualTypeArguments()
+                     {
+@@ -250,11 +253,13 @@ public class YamlConfigurationLoader implements ConfigurationLoader
                      public void set(Object o, Object o1) throws Exception
                      {
-+                        String ctestParam = o.toString(); //CTEST
                          newProperty.set(o, o1);
 +                        logger.warn("[CTEST][SET-PARAM] " + ctestParam); //CTEST
                      }
@@ -14,33 +28,27 @@ index a8d4695cb0..6fb9a23b3c 100644
                      @Override
                      public Object get(Object o)
                      {
-+                        String ctestParam = o.toString(); //CTEST
-                         return newProperty.get(o);
 +                        logger.warn("[CTEST][GET-PARAM] " + ctestParam + getStackTrace()); //CTEST
+                         return newProperty.get(o);
                      }
  
-                     @Override
-@@ -293,7 +297,9 @@ public class YamlConfigurationLoader implements ConfigurationLoader
-                     {
+@@ -294,6 +299,7 @@ public class YamlConfigurationLoader implements ConfigurationLoader
                          nullProperties.add(getName());
                      }
-+                    String ctestParam = object.toString(); //CTEST
                      result.set(object, value);
 +                    logger.warn("[CTEST][SET-PARAM] " + ctestParam); //CTEST
                  }
  
                  @Override
-@@ -305,7 +311,9 @@ public class YamlConfigurationLoader implements ConfigurationLoader
+@@ -305,6 +311,7 @@ public class YamlConfigurationLoader implements ConfigurationLoader
                  @Override
                  public Object get(Object object)
                  {
-+                    String ctestParam = object.toString(); //CTEST
-                     return result.get(object);
 +                    logger.warn("[CTEST][GET-PARAM] " + ctestParam + getStackTrace()); //CTEST
+                     return result.get(object);
                  }
  
-                 @Override
-@@ -427,4 +435,15 @@ public class YamlConfigurationLoader implements ConfigurationLoader
+@@ -427,4 +434,15 @@ public class YamlConfigurationLoader implements ConfigurationLoader
              this.deprecated = deprecated;
          }
      }

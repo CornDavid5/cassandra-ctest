@@ -13,8 +13,8 @@
 ## Note
 - default config, [link](https://cassandra.apache.org/doc/latest/cassandra/getting_started/configuring.html)
 - run test, [link](https://cassandra.apache.org/_/development/testing.html)
-- the test report in in `/build/test/output`
+- the test report is in `/build/test/output`
 
 ## Challenges
-- Cassandra uses ant to manage the project, therefore, its testing result structure is different from maven surefire.
 - It does not usually have a get API, all get operation is done directly via reading the Config class's public fields.
+- Cassandra uses ant to manage the project, therefore, need to modify the given python scripts quiet a lot to run the test in Cassandra.

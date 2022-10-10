@@ -1,0 +1,58 @@
+diff --git a/src/java/org/apache/cassandra/config/YamlConfigurationLoader.java b/src/java/org/apache/cassandra/config/YamlConfigurationLoader.java
+index a8d4695cb0..6fb9a23b3c 100644
+--- a/src/java/org/apache/cassandra/config/YamlConfigurationLoader.java
++++ b/src/java/org/apache/cassandra/config/YamlConfigurationLoader.java
+@@ -249,13 +249,17 @@ public class YamlConfigurationLoader implements ConfigurationLoader
+                     @Override
+                     public void set(Object o, Object o1) throws Exception
+                     {
++                        String ctestParam = o.toString(); //CTEST
+                         newProperty.set(o, o1);
++                        logger.warn("[CTEST][SET-PARAM] " + ctestParam); //CTEST
+                     }
+ 
+                     @Override
+                     public Object get(Object o)
+                     {
++                        String ctestParam = o.toString(); //CTEST
+                         return newProperty.get(o);
++                        logger.warn("[CTEST][GET-PARAM] " + ctestParam + getStackTrace()); //CTEST
+                     }
+ 
+                     @Override
+@@ -293,7 +297,9 @@ public class YamlConfigurationLoader implements ConfigurationLoader
+                     {
+                         nullProperties.add(getName());
+                     }
++                    String ctestParam = object.toString(); //CTEST
+                     result.set(object, value);
++                    logger.warn("[CTEST][SET-PARAM] " + ctestParam); //CTEST
+                 }
+ 
+                 @Override
+@@ -305,7 +311,9 @@ public class YamlConfigurationLoader implements ConfigurationLoader
+                 @Override
+                 public Object get(Object object)
+                 {
++                    String ctestParam = object.toString(); //CTEST
+                     return result.get(object);
++                    logger.warn("[CTEST][GET-PARAM] " + ctestParam + getStackTrace()); //CTEST
+                 }
+ 
+                 @Override
+@@ -427,4 +435,15 @@ public class YamlConfigurationLoader implements ConfigurationLoader
+             this.deprecated = deprecated;
+         }
+     }
++
++    // CTEST
++    private static String getStackTrace() {
++        String stacktrace = " ";
++        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
++            stacktrace = stacktrace.concat(
++                element.getClassName() + "#" + element.getMethodName() + "#" + element.getLineNumber() + "\t"
++            );
++        }
++        return stacktrace;
++    }
+ }

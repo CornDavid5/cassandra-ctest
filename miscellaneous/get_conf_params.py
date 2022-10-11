@@ -1,22 +1,25 @@
 def get_conf_params():
     config = []
-    with open('../cassandra/conf/cassandra.yaml', 'r') as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith('#') or len(line) == 0:
+    with open('../app/cassandra/src/java/org/apache/cassandra/config/Config.java', 'r') as f:
+        lines = f.readlines()
+
+        for i in range(52, 585):
+            line = lines[i].strip()
+
+            if not line.startswith('public') or not line.endswith(';'):
                 continue
-            comp = line.split(':')
-            config.append(comp[0] + '\n')
+
+            eq_i = line.find('=')
+            if eq_i == -1:
+                comp = line.split()
+                config.append(comp[-1][:-1] + '\n')
+            else:
+                comp = line[:eq_i].split()
+                config.append(comp[-1].strip() + '\n')
 
     with open('conf_params.txt', 'w') as f:
         f.writelines(config)
 
 
-# you may want to manually remove some configs which take multilevel value
-# for example:
-# audit_logging_options:
-#     enabled: false
-#     logger:
-#       - class_name: BinAuditLogger
 if __name__ == '__main__':
     get_conf_params()

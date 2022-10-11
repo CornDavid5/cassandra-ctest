@@ -3,7 +3,7 @@ import json
 
 
 def get_test_method_list():
-    path = r'../cassandra/test/unit/org/apache/cassandra/**/*Test.java'
+    path = r'../app/cassandra/test/unit/org/apache/cassandra/**/*Test.java'
     files = glob(path, recursive=True)
     test_method = []
 

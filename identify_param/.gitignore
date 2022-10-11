@@ -1,2 +1,5 @@
 cassandra-mvn-*
 __pycache__
+getter-record
+setter-record
+time-record

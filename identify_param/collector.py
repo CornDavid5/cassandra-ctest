@@ -25,25 +25,27 @@ class Collector:
     def parse_getter_record_file(self):
         for line in open(self.getter_record_file).readlines():
             line = line.strip("\n")
-            class_pound_method = line.split(" ")[0]
-            param = line.split(" ")[1]
+            comp = line.split(" ")
+            class_pound_method = comp[0]
+            param = comp[1]
             assert param in self.params, "wrong parameter"
 
             if param not in self.param_getter_map.keys():
                 self.param_getter_map[param] = set()
-            self.param_getter_map[param].add(class_pound_method)        
+            self.param_getter_map[param].add(class_pound_method)
 
     def parse_setter_record_file(self):
         for line in open(self.setter_record_file).readlines():
             line = line.strip("\n")
-            class_pound_method = line.split(" ")[0]
-            param = line.split(" ")[1]
+            comp = line.split(" ")
+            class_pound_method = comp[0]
+            param = comp[1]
             assert param in self.params, "wrong parameter"
 
             if param not in self.param_setter_map.keys():
                 self.param_setter_map[param] = set()
             self.param_setter_map[param].add(class_pound_method)
-            
+
     def generate_unset_getter_mapping(self):
         for key in self.param_getter_map.keys():
             self.param_unset_getter_map[key] = copy.deepcopy(self.param_getter_map[key])

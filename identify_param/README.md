@@ -13,7 +13,7 @@ Or, set up manually:
 - apply logging patches, `git apply ../../ctest-logging.patch`
 - build the project, `CASSANDRA_USE_JDK11=true ant clean && CASSANDRA_USE_JDK11=true ant`
 
-Check setup
+Then, check setup
 - go to cassandra directory, `cd app/cassandra`
 - run example test command, `CASSANDRA_USE_JDK11=true ant testsome -Dtest.name=org.apache.cassandra.service.GCInspectorTest -Dtest.methods=ensureStaticFieldsHydrateFromConfig`
 

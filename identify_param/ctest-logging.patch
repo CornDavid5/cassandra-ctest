@@ -1,5 +1,5 @@
 diff --git a/src/java/org/apache/cassandra/config/DatabaseDescriptor.java b/src/java/org/apache/cassandra/config/DatabaseDescriptor.java
-index f78a5b668a..30f9ca286e 100644
+index f78a5b668a..cb765a99d1 100644
 --- a/src/java/org/apache/cassandra/config/DatabaseDescriptor.java
 +++ b/src/java/org/apache/cassandra/config/DatabaseDescriptor.java
 @@ -858,8 +858,11 @@ public class DatabaseDescriptor
@@ -10,7 +10,7 @@ index f78a5b668a..30f9ca286e 100644
 +        logger.warn("[CTEST][GET-PARAM] " + "concurrent_compactors" ); //CTEST
          if (config.concurrent_validations < 1)
          {
-+            logger.warn("[CTEST][SET-PARAM] " + "concurrent_compactors"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "concurrent_compactors" + getStackTrace()); //CTEST
              config.concurrent_validations = config.concurrent_compactors;
          }
          else if (config.concurrent_validations > config.concurrent_compactors && !allowUnlimitedConcurrentValidations)
@@ -20,7 +20,7 @@ index f78a5b668a..30f9ca286e 100644
      {
 -        if (config.repair_command_pool_size < 1)
 +        if (config.repair_command_pool_size < 1) {
-+            logger.warn("[CTEST][SET-PARAM] " + "concurrent_validations"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "concurrent_validations" + getStackTrace()); //CTEST
              config.repair_command_pool_size = config.concurrent_validations;
 +        }
      }
@@ -91,49 +91,49 @@ index f78a5b668a..30f9ca286e 100644
          {
             logInfo("read_request_timeout_in_ms", conf.read_request_timeout_in_ms, LOWEST_ACCEPTED_TIMEOUT);
             conf.read_request_timeout_in_ms = LOWEST_ACCEPTED_TIMEOUT;
-+            logger.warn("[CTEST][SET-PARAM] " + "read_request_timeout_in_ms"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "read_request_timeout_in_ms" + getStackTrace()); //CTEST
          }
  
          if(conf.range_request_timeout_in_ms < LOWEST_ACCEPTED_TIMEOUT)
          {
             logInfo("range_request_timeout_in_ms", conf.range_request_timeout_in_ms, LOWEST_ACCEPTED_TIMEOUT);
             conf.range_request_timeout_in_ms = LOWEST_ACCEPTED_TIMEOUT;
-+            logger.warn("[CTEST][SET-PARAM] " + "range_request_timeout_in_ms"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "range_request_timeout_in_ms" + getStackTrace()); //CTEST
          }
  
          if(conf.request_timeout_in_ms < LOWEST_ACCEPTED_TIMEOUT)
          {
             logInfo("request_timeout_in_ms", conf.request_timeout_in_ms, LOWEST_ACCEPTED_TIMEOUT);
             conf.request_timeout_in_ms = LOWEST_ACCEPTED_TIMEOUT;
-+            logger.warn("[CTEST][SET-PARAM] " + "request_timeout_in_ms"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "request_timeout_in_ms" + getStackTrace()); //CTEST
          }
  
          if(conf.write_request_timeout_in_ms < LOWEST_ACCEPTED_TIMEOUT)
          {
             logInfo("write_request_timeout_in_ms", conf.write_request_timeout_in_ms, LOWEST_ACCEPTED_TIMEOUT);
             conf.write_request_timeout_in_ms = LOWEST_ACCEPTED_TIMEOUT;
-+            logger.warn("[CTEST][SET-PARAM] " + "write_request_timeout_in_ms"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "write_request_timeout_in_ms" + getStackTrace()); //CTEST
          }
  
          if(conf.cas_contention_timeout_in_ms < LOWEST_ACCEPTED_TIMEOUT)
          {
             logInfo("cas_contention_timeout_in_ms", conf.cas_contention_timeout_in_ms, LOWEST_ACCEPTED_TIMEOUT);
             conf.cas_contention_timeout_in_ms = LOWEST_ACCEPTED_TIMEOUT;
-+            logger.warn("[CTEST][SET-PARAM] " + "cas_contention_timeout_in_ms"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "cas_contention_timeout_in_ms" + getStackTrace()); //CTEST
          }
  
          if(conf.counter_write_request_timeout_in_ms < LOWEST_ACCEPTED_TIMEOUT)
          {
             logInfo("counter_write_request_timeout_in_ms", conf.counter_write_request_timeout_in_ms, LOWEST_ACCEPTED_TIMEOUT);
             conf.counter_write_request_timeout_in_ms = LOWEST_ACCEPTED_TIMEOUT;
-+            logger.warn("[CTEST][SET-PARAM] " + "counter_write_request_timeout_in_ms"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "counter_write_request_timeout_in_ms" + getStackTrace()); //CTEST
          }
  
          if(conf.truncate_request_timeout_in_ms < LOWEST_ACCEPTED_TIMEOUT)
          {
             logInfo("truncate_request_timeout_in_ms", conf.truncate_request_timeout_in_ms, LOWEST_ACCEPTED_TIMEOUT);
             conf.truncate_request_timeout_in_ms = LOWEST_ACCEPTED_TIMEOUT;
-+            logger.warn("[CTEST][SET-PARAM] " + "truncate_request_timeout_in_ms"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "truncate_request_timeout_in_ms" + getStackTrace()); //CTEST
          }
      }
  
@@ -150,7 +150,7 @@ index f78a5b668a..30f9ca286e 100644
 -                if (tokens.size() == 1)
 +                if (tokens.size() == 1) {
                      conf.num_tokens = 1;
-+                    logger.warn("[CTEST][SET-PARAM] " + "num_tokens"); //CTEST
++                    logger.warn("[CTEST][SET-PARAM] " + "num_tokens" + getStackTrace()); //CTEST
 +                }
                  else
                      throw new ConfigurationException("initial_token was set but num_tokens is not!", false);
@@ -159,7 +159,7 @@ index f78a5b668a..30f9ca286e 100644
          else if (conf.num_tokens == null)
          {
              conf.num_tokens = 1;
-+            logger.warn("[CTEST][SET-PARAM] " + "num_tokens"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "num_tokens" + getStackTrace()); //CTEST
          }
      }
  
@@ -181,7 +181,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setAuthenticator(IAuthenticator authenticator)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "authenticator"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "authenticator" + getStackTrace()); //CTEST
          DatabaseDescriptor.authenticator = authenticator;
      }
  
@@ -193,7 +193,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setAuthorizer(IAuthorizer authorizer)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "authorizer"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "authorizer" + getStackTrace()); //CTEST
          DatabaseDescriptor.authorizer = authorizer;
      }
  
@@ -205,7 +205,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setNetworkAuthorizer(INetworkAuthorizer networkAuthorizer)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "networkAuthorizer"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "networkAuthorizer" + getStackTrace()); //CTEST
          DatabaseDescriptor.networkAuthorizer = networkAuthorizer;
      }
  
@@ -217,7 +217,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setRoleManager(IRoleManager roleManager)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "roleManager"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "roleManager" + getStackTrace()); //CTEST
          DatabaseDescriptor.roleManager = roleManager;
      }
  
@@ -229,7 +229,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setPermissionsValidity(int timeout)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "rolemanager"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "rolemanager" + getStackTrace()); //CTEST
          conf.permissions_validity_in_ms = timeout;
      }
  
@@ -244,7 +244,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setPermissionsUpdateInterval(int updateInterval)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "permissions_update_interval_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "permissions_update_interval_in_ms" + getStackTrace()); //CTEST
          conf.permissions_update_interval_in_ms = updateInterval;
      }
  
@@ -268,7 +268,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setRolesValidity(int validity)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "roles_validity_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "roles_validity_in_ms" + getStackTrace()); //CTEST
          conf.roles_validity_in_ms = validity;
      }
  
@@ -283,7 +283,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setRolesUpdateInterval(int interval)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "roles_update_interval_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "roles_update_interval_in_ms" + getStackTrace()); //CTEST
          conf.roles_update_interval_in_ms = interval;
      }
  
@@ -307,7 +307,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setCredentialsValidity(int timeout)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "credentials_validity_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "credentials_validity_in_ms" + getStackTrace()); //CTEST
          conf.credentials_validity_in_ms = timeout;
      }
  
@@ -322,7 +322,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setCredentialsUpdateInterval(int updateInterval)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "credentials_update_interval_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "credentials_update_interval_in_ms" + getStackTrace()); //CTEST
          conf.credentials_update_interval_in_ms = updateInterval;
      }
  
@@ -346,7 +346,7 @@ index f78a5b668a..30f9ca286e 100644
  
      public static void setMaxValueSize(int maxValueSizeInBytes)
      {
-+        logger.warn("[CTEST][SET-PARAM] " + "max_value_size_in_mb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "max_value_size_in_mb" + getStackTrace()); //CTEST
          conf.max_value_size_in_mb = maxValueSizeInBytes / 1024 / 1024;
      }
  
@@ -405,7 +405,7 @@ index f78a5b668a..30f9ca286e 100644
      {
          checkValidForByteConversion(val, "column_index_size_in_kb", ByteUnit.KIBI_BYTES);
          conf.column_index_size_in_kb = val;
-+        logger.warn("[CTEST][SET-PARAM] " + "column_index_size_in_kb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "column_index_size_in_kb" + getStackTrace()); //CTEST
      }
  
      public static int getColumnIndexCacheSize()
@@ -424,7 +424,7 @@ index f78a5b668a..30f9ca286e 100644
      {
          checkValidForByteConversion(val, "column_index_cache_size_in_kb", ByteUnit.KIBI_BYTES);
          conf.column_index_cache_size_in_kb = val;
-+        logger.warn("[CTEST][SET-PARAM] " + "column_index_cache_size_in_kb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "column_index_cache_size_in_kb" + getStackTrace()); //CTEST
      }
  
      public static int getBatchSizeWarnThreshold()
@@ -461,13 +461,13 @@ index f78a5b668a..30f9ca286e 100644
      {
          checkValidForByteConversion(threshold, "batch_size_warn_threshold_in_kb", ByteUnit.KIBI_BYTES);
          conf.batch_size_warn_threshold_in_kb = threshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "batch_size_warn_threshold_in_kb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "batch_size_warn_threshold_in_kb" + getStackTrace()); //CTEST
      }
  
      public static void setBatchSizeFailThresholdInKB(int threshold)
      {
          conf.batch_size_fail_threshold_in_kb = threshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "batch_size_fail_threshold_in_kb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "batch_size_fail_threshold_in_kb" + getStackTrace()); //CTEST
      }
  
      public static Collection<String> getInitialTokens()
@@ -521,7 +521,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportIdleTimeout(long nativeTransportTimeout)
      {
          conf.native_transport_idle_timeout_in_ms = nativeTransportTimeout;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_idle_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_idle_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static long getRpcTimeout(TimeUnit unit)
@@ -533,7 +533,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRpcTimeout(long timeOutInMillis)
      {
          conf.request_timeout_in_ms = timeOutInMillis;
-+        logger.warn("[CTEST][SET-PARAM] " + "request_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "request_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static long getReadRpcTimeout(TimeUnit unit)
@@ -545,7 +545,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setReadRpcTimeout(long timeOutInMillis)
      {
          conf.read_request_timeout_in_ms = timeOutInMillis;
-+        logger.warn("[CTEST][SET-PARAM] " + "read_request_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "read_request_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static long getRangeRpcTimeout(TimeUnit unit)
@@ -557,7 +557,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRangeRpcTimeout(long timeOutInMillis)
      {
          conf.range_request_timeout_in_ms = timeOutInMillis;
-+        logger.warn("[CTEST][SET-PARAM] " + "range_request_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "range_request_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static long getWriteRpcTimeout(TimeUnit unit)
@@ -569,7 +569,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setWriteRpcTimeout(long timeOutInMillis)
      {
          conf.write_request_timeout_in_ms = timeOutInMillis;
-+        logger.warn("[CTEST][SET-PARAM] " + "write_request_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "write_request_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static long getCounterWriteRpcTimeout(TimeUnit unit)
@@ -581,7 +581,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCounterWriteRpcTimeout(long timeOutInMillis)
      {
          conf.counter_write_request_timeout_in_ms = timeOutInMillis;
-+        logger.warn("[CTEST][SET-PARAM] " + "counter_write_request_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "counter_write_request_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static long getCasContentionTimeout(TimeUnit unit)
@@ -593,7 +593,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCasContentionTimeout(long timeOutInMillis)
      {
          conf.cas_contention_timeout_in_ms = timeOutInMillis;
-+        logger.warn("[CTEST][SET-PARAM] " + "cas_contention_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "cas_contention_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static long getTruncateRpcTimeout(TimeUnit unit)
@@ -605,7 +605,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setTruncateRpcTimeout(long timeOutInMillis)
      {
          conf.truncate_request_timeout_in_ms = timeOutInMillis;
-+        logger.warn("[CTEST][SET-PARAM] " + "truncate_request_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "truncate_request_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static boolean hasCrossNodeTimeout()
@@ -617,7 +617,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCrossNodeTimeout(boolean crossNodeTimeout)
      {
          conf.cross_node_timeout = crossNodeTimeout;
-+        logger.warn("[CTEST][SET-PARAM] " + "cross_node_timeout"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "cross_node_timeout" + getStackTrace()); //CTEST
      }
  
      public static long getSlowQueryTimeout(TimeUnit units)
@@ -637,7 +637,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRepairRpcTimeout(long time, TimeUnit unit)
      {
          conf.repair_request_timeout_in_ms = MILLISECONDS.convert(time, unit);
-+        logger.warn("[CTEST][SET-PARAM] " + "repair_request_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "repair_request_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static double getPhiConvictThreshold()
@@ -649,7 +649,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setPhiConvictThreshold(double phiConvictThreshold)
      {
          conf.phi_convict_threshold = phiConvictThreshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "phi_convict_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "phi_convict_threshold" + getStackTrace()); //CTEST
      }
  
      public static int getConcurrentReaders()
@@ -662,7 +662,7 @@ index f78a5b668a..30f9ca286e 100644
              throw new IllegalArgumentException("Concurrent reads must be non-negative");
          }
          conf.concurrent_reads = concurrent_reads;
-+        logger.warn("[CTEST][SET-PARAM] " + "concurrent_reads"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "concurrent_reads" + getStackTrace()); //CTEST
      }
  
      public static int getConcurrentWriters()
@@ -675,7 +675,7 @@ index f78a5b668a..30f9ca286e 100644
              throw new IllegalArgumentException("Concurrent reads must be non-negative");
          }
          conf.concurrent_writes = concurrent_writers;
-+        logger.warn("[CTEST][SET-PARAM] " + "concurrent_writes"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "concurrent_writes" + getStackTrace()); //CTEST
      }
  
      public static int getConcurrentCounterWriters()
@@ -688,7 +688,7 @@ index f78a5b668a..30f9ca286e 100644
              throw new IllegalArgumentException("Concurrent reads must be non-negative");
          }
          conf.concurrent_counter_writes = concurrent_counter_writes;
-+        logger.warn("[CTEST][SET-PARAM] " + "concurrent_counter_writes"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "concurrent_counter_writes" + getStackTrace()); //CTEST
      }
  
      public static int getConcurrentViewWriters()
@@ -701,7 +701,7 @@ index f78a5b668a..30f9ca286e 100644
              throw new IllegalArgumentException("Concurrent reads must be non-negative");
          }
          conf.concurrent_materialized_view_writes = concurrent_materialized_view_writes;
-+        logger.warn("[CTEST][SET-PARAM] " + "concurrent_materialized_view_writes"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "concurrent_materialized_view_writes" + getStackTrace()); //CTEST
      }
  
      public static int getFlushWriters()
@@ -719,7 +719,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setConcurrentCompactors(int value)
      {
          conf.concurrent_compactors = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "concurrent_compactors"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "concurrent_compactors" + getStackTrace()); //CTEST
      }
  
      public static int getCompactionThroughputMbPerSec()
@@ -731,7 +731,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCompactionThroughputMbPerSec(int value)
      {
          conf.compaction_throughput_mb_per_sec = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "compaction_throughput_mb_per_sec"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "compaction_throughput_mb_per_sec" + getStackTrace()); //CTEST
      }
  
 -    public static long getCompactionLargePartitionWarningThreshold() { return ByteUnit.MEBI_BYTES.toBytes(conf.compaction_large_partition_warning_threshold_mb); }
@@ -750,7 +750,7 @@ index f78a5b668a..30f9ca286e 100644
      {
          value = value > 0 ? value : Integer.MAX_VALUE;
          conf.concurrent_validations = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "concurrent_validations"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "concurrent_validations" + getStackTrace()); //CTEST
      }
  
      public static int getConcurrentViewBuilders()
@@ -762,7 +762,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setConcurrentViewBuilders(int value)
      {
          conf.concurrent_materialized_view_builders = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "concurrent_materialized_view_builders"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "concurrent_materialized_view_builders" + getStackTrace()); //CTEST
      }
  
      public static long getMinFreeSpacePerDriveInBytes()
@@ -782,7 +782,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setStreamThroughputOutboundMegabitsPerSec(int value)
      {
          conf.stream_throughput_outbound_megabits_per_sec = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "stream_throughput_outbound_megabits_per_sec"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "stream_throughput_outbound_megabits_per_sec" + getStackTrace()); //CTEST
      }
  
      public static int getInterDCStreamThroughputOutboundMegabitsPerSec()
@@ -794,7 +794,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setInterDCStreamThroughputOutboundMegabitsPerSec(int value)
      {
          conf.inter_dc_stream_throughput_outbound_megabits_per_sec = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "inter_dc_stream_throughput_outbound_megabits_per_sec"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "inter_dc_stream_throughput_outbound_megabits_per_sec" + getStackTrace()); //CTEST
      }
  
      /**
@@ -853,7 +853,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCommitLogLocation(String value)
      {
          conf.commitlog_directory = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "commitlog_directory"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "commitlog_directory" + getStackTrace()); //CTEST
      }
  
      public static ParameterizedClass getCommitLogCompression()
@@ -865,7 +865,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCommitLogCompression(ParameterizedClass compressor)
      {
          conf.commitlog_compression = compressor;
-+        logger.warn("[CTEST][SET-PARAM] " + "commitlog_compression"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "commitlog_compression" + getStackTrace()); //CTEST
      }
  
      public static Config.FlushCompression getFlushCompression()
@@ -877,7 +877,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setFlushCompression(Config.FlushCompression compression)
      {
          conf.flush_compression = compression;
-+        logger.warn("[CTEST][SET-PARAM] " + "flush_compression"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "flush_compression" + getStackTrace()); //CTEST
      }
  
     /**
@@ -892,7 +892,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCommitLogMaxCompressionBuffersPerPool(int buffers)
      {
          conf.commitlog_max_compression_buffers_in_pool = buffers;
-+        logger.warn("[CTEST][SET-PARAM] " + "commitlog_max_compression_buffers_in_pool"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "commitlog_max_compression_buffers_in_pool" + getStackTrace()); //CTEST
      }
  
      public static int getMaxMutationSize()
@@ -910,7 +910,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setTombstoneWarnThreshold(int threshold)
      {
          conf.tombstone_warn_threshold = threshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "tombstone_warn_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "tombstone_warn_threshold" + getStackTrace()); //CTEST
      }
  
      public static int getTombstoneFailureThreshold()
@@ -922,7 +922,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setTombstoneFailureThreshold(int threshold)
      {
          conf.tombstone_failure_threshold = threshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "tombstone_failure_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "tombstone_failure_threshold" + getStackTrace()); //CTEST
      }
  
      public static int getCachedReplicaRowsWarnThreshold()
@@ -934,7 +934,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCachedReplicaRowsWarnThreshold(int threshold)
      {
          conf.replica_filtering_protection.cached_rows_warn_threshold = threshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "replica_filtering_protection.cached_rows_warn_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "replica_filtering_protection.cached_rows_warn_threshold" + getStackTrace()); //CTEST
      }
  
      public static int getCachedReplicaRowsFailThreshold()
@@ -946,7 +946,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCachedReplicaRowsFailThreshold(int threshold)
      {
          conf.replica_filtering_protection.cached_rows_fail_threshold = threshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "replica_filtering_protection.cached_rows_fail_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "replica_filtering_protection.cached_rows_fail_threshold" + getStackTrace()); //CTEST
      }
  
      /**
@@ -961,7 +961,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCommitLogSegmentSize(int sizeMegabytes)
      {
          conf.commitlog_segment_size_in_mb = sizeMegabytes;
-+        logger.warn("[CTEST][SET-PARAM] " + "commitlog_segment_size_in_mb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "commitlog_segment_size_in_mb" + getStackTrace()); //CTEST
      }
  
      public static String getSavedCachesLocation()
@@ -981,13 +981,13 @@ index f78a5b668a..30f9ca286e 100644
      public static void setShouldListenOnBroadcastAddress(boolean shouldListenOnBroadcastAddress)
      {
          conf.listen_on_broadcast_address = shouldListenOnBroadcastAddress;
-+        logger.warn("[CTEST][SET-PARAM] " + "listen_on_broadcast_address"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "listen_on_broadcast_address" + getStackTrace()); //CTEST
      }
  
      public static void setListenOnBroadcastAddress(boolean listen_on_broadcast_address)
      {
          conf.listen_on_broadcast_address = listen_on_broadcast_address;
-+        logger.warn("[CTEST][SET-PARAM] " + "listen_on_broadcast_address"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "listen_on_broadcast_address" + getStackTrace()); //CTEST
      }
  
      public static IInternodeAuthenticator getInternodeAuthenticator()
@@ -1056,7 +1056,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setInternodeTcpConnectTimeoutInMS(int value)
      {
          conf.internode_tcp_connect_timeout_in_ms = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "internode_tcp_connect_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "internode_tcp_connect_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static int getInternodeTcpUserTimeoutInMS()
@@ -1068,7 +1068,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setInternodeTcpUserTimeoutInMS(int value)
      {
          conf.internode_tcp_user_timeout_in_ms = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "internode_tcp_user_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "internode_tcp_user_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static int getInternodeStreamingTcpUserTimeoutInMS()
@@ -1080,7 +1080,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setInternodeStreamingTcpUserTimeoutInMS(int value)
      {
          conf.internode_streaming_tcp_user_timeout_in_ms = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "internode_streaming_tcp_user_timeout_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "internode_streaming_tcp_user_timeout_in_ms" + getStackTrace()); //CTEST
      }
  
      public static int getInternodeMaxMessageSizeInBytes()
@@ -1093,7 +1093,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setInternodeMaxMessageSizeInBytes(int value)
      {
          conf.internode_max_message_size_in_bytes = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "internode_max_message_size_in_bytes"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "internode_max_message_size_in_bytes" + getStackTrace()); //CTEST
      }
  
      public static boolean startNativeTransport()
@@ -1114,7 +1114,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportPort(int port)
      {
          conf.native_transport_port = port;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_port"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_port" + getStackTrace()); //CTEST
      }
  
      public static int getNativeTransportPortSSL()
@@ -1127,7 +1127,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportPortSSL(Integer port)
      {
          conf.native_transport_port_ssl = port;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_port_ssl"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_port_ssl" + getStackTrace()); //CTEST
      }
  
      public static int getNativeTransportMaxThreads()
@@ -1139,7 +1139,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportMaxThreads(int max_threads)
      {
          conf.native_transport_max_threads = max_threads;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_threads"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_threads" + getStackTrace()); //CTEST
      }
  
      public static int getNativeTransportMaxFrameSize()
@@ -1157,7 +1157,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportMaxConcurrentConnections(long nativeTransportMaxConcurrentConnections)
      {
          conf.native_transport_max_concurrent_connections = nativeTransportMaxConcurrentConnections;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_concurrent_connections"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_concurrent_connections" + getStackTrace()); //CTEST
      }
  
      public static long getNativeTransportMaxConcurrentConnectionsPerIp()
@@ -1169,7 +1169,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportMaxConcurrentConnectionsPerIp(long native_transport_max_concurrent_connections_per_ip)
      {
          conf.native_transport_max_concurrent_connections_per_ip = native_transport_max_concurrent_connections_per_ip;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_concurrent_connections_per_ip"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_concurrent_connections_per_ip" + getStackTrace()); //CTEST
      }
  
      public static boolean useNativeTransportLegacyFlusher()
@@ -1187,7 +1187,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportAllowOlderProtocols(boolean isEnabled)
      {
          conf.native_transport_allow_older_protocols = isEnabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_allow_older_protocols"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_allow_older_protocols" + getStackTrace()); //CTEST
      }
  
      public static double getCommitLogSyncGroupWindow()
@@ -1199,7 +1199,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCommitLogSyncGroupWindow(double windowMillis)
      {
          conf.commitlog_sync_group_window_in_ms = windowMillis;
-+        logger.warn("[CTEST][SET-PARAM] " + "commitlog_sync_group_window_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "commitlog_sync_group_window_in_ms" + getStackTrace()); //CTEST
      }
  
      public static int getNativeTransportReceiveQueueCapacityInBytes()
@@ -1211,7 +1211,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportReceiveQueueCapacityInBytes(int queueSize)
      {
          conf.native_transport_receive_queue_capacity_in_bytes = queueSize;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_receive_queue_capacity_in_bytes"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_receive_queue_capacity_in_bytes" + getStackTrace()); //CTEST
      }
  
      public static long getNativeTransportMaxConcurrentRequestsInBytesPerIp()
@@ -1223,7 +1223,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportMaxConcurrentRequestsInBytesPerIp(long maxConcurrentRequestsInBytes)
      {
          conf.native_transport_max_concurrent_requests_in_bytes_per_ip = maxConcurrentRequestsInBytes;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_concurrent_requests_in_bytes_per_ip"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_concurrent_requests_in_bytes_per_ip" + getStackTrace()); //CTEST
      }
  
      public static long getNativeTransportMaxConcurrentRequestsInBytes()
@@ -1235,7 +1235,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setNativeTransportMaxConcurrentRequestsInBytes(long maxConcurrentRequestsInBytes)
      {
          conf.native_transport_max_concurrent_requests_in_bytes = maxConcurrentRequestsInBytes;
-+        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_concurrent_requests_in_bytes"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "native_transport_max_concurrent_requests_in_bytes" + getStackTrace()); //CTEST
      }
  
      public static int getCommitLogSyncPeriod()
@@ -1254,7 +1254,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCommitLogSyncPeriod(int periodMillis)
      {
          conf.commitlog_sync_period_in_ms = periodMillis;
-+        logger.warn("[CTEST][SET-PARAM] " + "commitlog_sync_period_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "commitlog_sync_period_in_ms" + getStackTrace()); //CTEST
      }
  
      public static Config.CommitLogSync getCommitLogSync()
@@ -1266,7 +1266,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCommitLogSync(CommitLogSync sync)
      {
          conf.commitlog_sync = sync;
-+        logger.warn("[CTEST][SET-PARAM] " + "commitlog_sync"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "commitlog_sync" + getStackTrace()); //CTEST
      }
  
      public static Config.DiskAccessMode getDiskAccessMode()
@@ -1279,7 +1279,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setDiskAccessMode(Config.DiskAccessMode mode)
      {
          conf.disk_access_mode = mode;
-+        logger.warn("[CTEST][SET-PARAM] " + "disk_access_mode"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "disk_access_mode" + getStackTrace()); //CTEST
      }
  
      public static Config.DiskAccessMode getIndexAccessMode()
@@ -1287,7 +1287,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setDiskFailurePolicy(Config.DiskFailurePolicy policy)
      {
          conf.disk_failure_policy = policy;
-+        logger.warn("[CTEST][SET-PARAM] " + "disk_failure_policy"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "disk_failure_policy" + getStackTrace()); //CTEST
      }
  
      public static Config.DiskFailurePolicy getDiskFailurePolicy()
@@ -1299,7 +1299,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCommitFailurePolicy(Config.CommitFailurePolicy policy)
      {
          conf.commit_failure_policy = policy;
-+        logger.warn("[CTEST][SET-PARAM] " + "commit_failure_policy"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "commit_failure_policy" + getStackTrace()); //CTEST
      }
  
      public static Config.CommitFailurePolicy getCommitFailurePolicy()
@@ -1324,7 +1324,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setAutoSnapshot(boolean autoSnapshot)
      {
          conf.auto_snapshot = autoSnapshot;
-+        logger.warn("[CTEST][SET-PARAM] " + "auto_snapshot"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "auto_snapshot" + getStackTrace()); //CTEST
      }
      @VisibleForTesting
      public static boolean getAutoSnapshot()
@@ -1343,7 +1343,7 @@ index f78a5b668a..30f9ca286e 100644
              throw new IllegalArgumentException("Invalid throttle for snapshot_links_per_second: must be positive");
  
          conf.snapshot_links_per_second = throttle;
-+        logger.warn("[CTEST][SET-PARAM] " + "snapshot_links_per_second"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "snapshot_links_per_second" + getStackTrace()); //CTEST
      }
  
      public static RateLimiter getSnapshotRateLimiter()
@@ -1358,7 +1358,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setHintedHandoffEnabled(boolean hintedHandoffEnabled)
      {
          conf.hinted_handoff_enabled = hintedHandoffEnabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "hinted_handoff_enabled"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "hinted_handoff_enabled" + getStackTrace()); //CTEST
      }
  
      public static boolean hintedHandoffEnabled()
@@ -1376,19 +1376,19 @@ index f78a5b668a..30f9ca286e 100644
      public static void enableHintsForDC(String dc)
      {
          conf.hinted_handoff_disabled_datacenters.remove(dc);
-+        logger.warn("[CTEST][SET-PARAM] " + "hinted_handoff_disabled_datacenters"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "hinted_handoff_disabled_datacenters" + getStackTrace()); //CTEST
      }
  
      public static void disableHintsForDC(String dc)
      {
          conf.hinted_handoff_disabled_datacenters.add(dc);
-+        logger.warn("[CTEST][SET-PARAM] " + "hinted_handoff_disabled_datacenters"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "hinted_handoff_disabled_datacenters" + getStackTrace()); //CTEST
      }
  
      public static void setMaxHintWindow(int ms)
      {
          conf.max_hint_window_in_ms = ms;
-+        logger.warn("[CTEST][SET-PARAM] " + "max_hint_window_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "max_hint_window_in_ms" + getStackTrace()); //CTEST
      }
  
      public static int getMaxHintWindow()
@@ -1419,7 +1419,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setDynamicUpdateInterval(int dynamicUpdateInterval)
      {
          conf.dynamic_snitch_update_interval_in_ms = dynamicUpdateInterval;
-+        logger.warn("[CTEST][SET-PARAM] " + "dynamic_snitch_update_interval_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "dynamic_snitch_update_interval_in_ms" + getStackTrace()); //CTEST
      }
  
      public static int getDynamicResetInterval()
@@ -1430,7 +1430,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setDynamicResetInterval(int dynamicResetInterval)
      {
          conf.dynamic_snitch_reset_interval_in_ms = dynamicResetInterval;
-+        logger.warn("[CTEST][SET-PARAM] " + "dynamic_snitch_reset_interval_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "dynamic_snitch_reset_interval_in_ms" + getStackTrace()); //CTEST
      }
  
      public static double getDynamicBadnessThreshold()
@@ -1442,7 +1442,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setDynamicBadnessThreshold(double dynamicBadnessThreshold)
      {
          conf.dynamic_snitch_badness_threshold = dynamicBadnessThreshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "dynamic_snitch_badness_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "dynamic_snitch_badness_threshold" + getStackTrace()); //CTEST
      }
  
      public static EncryptionOptions.ServerEncryptionOptions getInternodeMessagingEncyptionOptions()
@@ -1454,7 +1454,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setInternodeMessagingEncyptionOptions(EncryptionOptions.ServerEncryptionOptions encryptionOptions)
      {
          conf.server_encryption_options = encryptionOptions;
-+        logger.warn("[CTEST][SET-PARAM] " + "server_encryption_options"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "server_encryption_options" + getStackTrace()); //CTEST
      }
  
      public static EncryptionOptions getNativeProtocolEncryptionOptions()
@@ -1467,7 +1467,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void updateNativeProtocolEncryptionOptions(Function<EncryptionOptions, EncryptionOptions> update)
      {
          conf.client_encryption_options = update.apply(conf.client_encryption_options);
-+        logger.warn("[CTEST][SET-PARAM] " + "client_encryption_options"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "client_encryption_options" + getStackTrace()); //CTEST
      }
  
      public static int getHintedHandoffThrottleInKB()
@@ -1479,7 +1479,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setHintedHandoffThrottleInKB(int throttleInKB)
      {
          conf.hinted_handoff_throttle_in_kb = throttleInKB;
-+        logger.warn("[CTEST][SET-PARAM] " + "hinted_handoff_throttle_in_kb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "hinted_handoff_throttle_in_kb" + getStackTrace()); //CTEST
      }
  
      public static int getBatchlogReplayThrottleInKB()
@@ -1491,7 +1491,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setBatchlogReplayThrottleInKB(int throttleInKB)
      {
          conf.batchlog_replay_throttle_in_kb = throttleInKB;
-+        logger.warn("[CTEST][SET-PARAM] " + "batchlog_replay_throttle_in_kb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "batchlog_replay_throttle_in_kb" + getStackTrace()); //CTEST
      }
  
      public static int getMaxHintsDeliveryThreads()
@@ -1517,7 +1517,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setHintsCompression(ParameterizedClass parameterizedClass)
      {
          conf.hints_compression = parameterizedClass;
-+        logger.warn("[CTEST][SET-PARAM] " + "hints_compression"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "hints_compression" + getStackTrace()); //CTEST
      }
  
      public static boolean isIncrementalBackupsEnabled()
@@ -1529,7 +1529,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setIncrementalBackupsEnabled(boolean value)
      {
          conf.incremental_backups = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "incremental_backups"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "incremental_backups" + getStackTrace()); //CTEST
      }
  
      public static boolean getFileCacheEnabled()
@@ -1585,7 +1585,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setMigrateKeycacheOnCompaction(boolean migrateCacheEntry)
      {
          conf.key_cache_migrate_during_compaction = migrateCacheEntry;
-+        logger.warn("[CTEST][SET-PARAM] " + "key_cache_migrate_during_compaction"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "key_cache_migrate_during_compaction" + getStackTrace()); //CTEST
      }
  
      public static int getSSTablePreemptiveOpenIntervalInMB()
@@ -1596,7 +1596,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setSSTablePreemptiveOpenIntervalInMB(int mb)
      {
          conf.sstable_preemptive_open_interval_in_mb = mb;
-+        logger.warn("[CTEST][SET-PARAM] " + "sstable_preemptive_open_interval_in_mb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "sstable_preemptive_open_interval_in_mb" + getStackTrace()); //CTEST
      }
  
      public static boolean getTrickleFsync()
@@ -1622,7 +1622,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setKeyCacheSavePeriod(int keyCacheSavePeriod)
      {
          conf.key_cache_save_period = keyCacheSavePeriod;
-+        logger.warn("[CTEST][SET-PARAM] " + "key_cache_save_period"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "key_cache_save_period" + getStackTrace()); //CTEST
      }
  
      public static int getKeyCacheKeysToSave()
@@ -1634,7 +1634,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setKeyCacheKeysToSave(int keyCacheKeysToSave)
      {
          conf.key_cache_keys_to_save = keyCacheKeysToSave;
-+        logger.warn("[CTEST][SET-PARAM] " + "key_cache_keys_to_save"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "key_cache_keys_to_save" + getStackTrace()); //CTEST
      }
  
      public static String getRowCacheClassName()
@@ -1653,7 +1653,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRowCacheSizeInMB(long val)
      {
          conf.row_cache_size_in_mb = val;
-+        logger.warn("[CTEST][SET-PARAM] " + "row_cache_size_in_mb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "row_cache_size_in_mb" + getStackTrace()); //CTEST
      }
  
      public static int getRowCacheSavePeriod()
@@ -1665,7 +1665,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRowCacheSavePeriod(int rowCacheSavePeriod)
      {
          conf.row_cache_save_period = rowCacheSavePeriod;
-+        logger.warn("[CTEST][SET-PARAM] " + "row_cache_save_period"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "row_cache_save_period" + getStackTrace()); //CTEST
      }
  
      public static int getRowCacheKeysToSave()
@@ -1678,7 +1678,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRowCacheKeysToSave(int rowCacheKeysToSave)
      {
          conf.row_cache_keys_to_save = rowCacheKeysToSave;
-+        logger.warn("[CTEST][SET-PARAM] " + "row_cache_keys_to_save"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "row_cache_keys_to_save" + getStackTrace()); //CTEST
      }
  
      public static int getCounterCacheSavePeriod()
@@ -1690,7 +1690,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCounterCacheSavePeriod(int counterCacheSavePeriod)
      {
          conf.counter_cache_save_period = counterCacheSavePeriod;
-+        logger.warn("[CTEST][SET-PARAM] " + "counter_cache_save_period"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "counter_cache_save_period" + getStackTrace()); //CTEST
      }
  
      public static int getCacheLoadTimeout()
@@ -1703,7 +1703,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCacheLoadTimeout(int seconds)
      {
          conf.cache_load_timeout_seconds = seconds;
-+        logger.warn("[CTEST][SET-PARAM] " + "cache_load_timeout_seconds"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "cache_load_timeout_seconds" + getStackTrace()); //CTEST
      }
  
      public static int getCounterCacheKeysToSave()
@@ -1715,7 +1715,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCounterCacheKeysToSave(int counterCacheKeysToSave)
      {
          conf.counter_cache_keys_to_save = counterCacheKeysToSave;
-+        logger.warn("[CTEST][SET-PARAM] " + "counter_cache_keys_to_save"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "counter_cache_keys_to_save" + getStackTrace()); //CTEST
      }
  
      public static int getStreamingKeepAlivePeriod()
@@ -1753,7 +1753,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setInternodeCompression(Config.InternodeCompression compression)
      {
          conf.internode_compression = compression;
-+        logger.warn("[CTEST][SET-PARAM] " + "internode_compression"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "internode_compression" + getStackTrace()); //CTEST
      }
  
      public static boolean getInterDCTcpNoDelay()
@@ -1790,7 +1790,7 @@ index f78a5b668a..30f9ca286e 100644
              logger.warn("repair_session_max_tree_depth of " + depth + " > 20 could lead to excessive memory usage");
  
          conf.repair_session_max_tree_depth = depth;
-+        logger.warn("[CTEST][SET-PARAM] " + "repair_session_max_tree_depth"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "repair_session_max_tree_depth" + getStackTrace()); //CTEST
      }
  
      public static int getRepairSessionSpaceInMegabytes()
@@ -1803,7 +1803,7 @@ index f78a5b668a..30f9ca286e 100644
                          " megabytes is likely to cause heap pressure.");
  
          conf.repair_session_space_in_mb = sizeInMegabytes;
-+        logger.warn("[CTEST][SET-PARAM] " + "repair_session_space_in_mb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "repair_session_space_in_mb" + getStackTrace()); //CTEST
      }
  
      public static Float getMemtableCleanupThreshold()
@@ -1821,7 +1821,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setIndexSummaryResizeIntervalInMinutes(int value)
      {
          conf.index_summary_resize_interval_in_minutes = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "index_summary_resize_interval_in_minutes"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "index_summary_resize_interval_in_minutes" + getStackTrace()); //CTEST
      }
  
      public static boolean hasLargeAddressSpace()
@@ -1862,7 +1862,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void enableScriptedUserDefinedFunctions(boolean enableScriptedUserDefinedFunctions)
      {
          conf.enable_scripted_user_defined_functions = enableScriptedUserDefinedFunctions;
-+        logger.warn("[CTEST][SET-PARAM] " + "enable_scripted_user_defined_functions"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "enable_scripted_user_defined_functions" + getStackTrace()); //CTEST
      }
  
      public static boolean enableUserDefinedFunctionsThreads()
@@ -1880,7 +1880,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setUserDefinedFunctionWarnTimeout(long userDefinedFunctionWarnTimeout)
      {
          conf.user_defined_function_warn_timeout = userDefinedFunctionWarnTimeout;
-+        logger.warn("[CTEST][SET-PARAM] " + "user_defined_function_warn_timeout"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "user_defined_function_warn_timeout" + getStackTrace()); //CTEST
      }
  
      public static boolean allowInsecureUDFs()
@@ -1904,7 +1904,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setEnableMaterializedViews(boolean enableMaterializedViews)
      {
          conf.enable_materialized_views = enableMaterializedViews;
-+        logger.warn("[CTEST][SET-PARAM] " + "enable_materialized_views"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "enable_materialized_views" + getStackTrace()); //CTEST
      }
  
      public static boolean getEnableSASIIndexes()
@@ -1916,7 +1916,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setEnableSASIIndexes(boolean enableSASIIndexes)
      {
          conf.enable_sasi_indexes = enableSASIIndexes;
-+        logger.warn("[CTEST][SET-PARAM] " + "enable_sasi_indexes"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "enable_sasi_indexes" + getStackTrace()); //CTEST
      }
  
      public static boolean isTransientReplicationEnabled()
@@ -1928,7 +1928,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setTransientReplicationEnabledUnsafe(boolean enabled)
      {
          conf.enable_transient_replication = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "enable_transient_replication"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "enable_transient_replication" + getStackTrace()); //CTEST
      }
  
      public static boolean enableDropCompactStorage()
@@ -1941,7 +1941,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setEnableDropCompactStorage(boolean enableDropCompactStorage)
      {
          conf.enable_drop_compact_storage = enableDropCompactStorage;
-+        logger.warn("[CTEST][SET-PARAM] " + "enable_drop_compact_storage"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "enable_drop_compact_storage" + getStackTrace()); //CTEST
      }
  
      public static long getUserDefinedFunctionFailTimeout()
@@ -1953,7 +1953,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setUserDefinedFunctionFailTimeout(long userDefinedFunctionFailTimeout)
      {
          conf.user_defined_function_fail_timeout = userDefinedFunctionFailTimeout;
-+        logger.warn("[CTEST][SET-PARAM] " + "user_defined_function_fail_timeout"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "user_defined_function_fail_timeout" + getStackTrace()); //CTEST
      }
  
      public static Config.UserFunctionTimeoutPolicy getUserFunctionTimeoutPolicy()
@@ -1965,7 +1965,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setUserFunctionTimeoutPolicy(Config.UserFunctionTimeoutPolicy userFunctionTimeoutPolicy)
      {
          conf.user_function_timeout_policy = userFunctionTimeoutPolicy;
-+        logger.warn("[CTEST][SET-PARAM] " + "user_function_timeout_policy"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "user_function_timeout_policy" + getStackTrace()); //CTEST
      }
  
      public static long getGCLogThreshold()
@@ -1977,7 +1977,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setGCLogThreshold(int gcLogThreshold)
      {
          conf.gc_log_threshold_in_ms = gcLogThreshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "gc_log_threshold_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "gc_log_threshold_in_ms" + getStackTrace()); //CTEST
      }
  
      public static EncryptionContext getEncryptionContext()
@@ -1992,7 +1992,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setGCWarnThreshold(int threshold)
      {
          conf.gc_warn_threshold_in_ms = threshold;
-+        logger.warn("[CTEST][SET-PARAM] " + "gc_warn_threshold_in_ms"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "gc_warn_threshold_in_ms" + getStackTrace()); //CTEST
      }
  
      public static boolean isCDCEnabled()
@@ -2005,7 +2005,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCDCEnabled(boolean cdc_enabled)
      {
          conf.cdc_enabled = cdc_enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "cdc_enabled"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "cdc_enabled" + getStackTrace()); //CTEST
      }
  
      public static String getCDCLogLocation()
@@ -2024,7 +2024,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCDCSpaceInMB(int input)
      {
          conf.cdc_total_space_in_mb = input;
-+        logger.warn("[CTEST][SET-PARAM] " + "cdc_total_space_in_mb"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "cdc_total_space_in_mb" + getStackTrace()); //CTEST
      }
  
      public static int getCDCDiskCheckInterval()
@@ -2044,7 +2044,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setDiagnosticEventsEnabled(boolean enabled)
      {
          conf.diagnostic_events_enabled = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "diagnostic_events_enabled"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "diagnostic_events_enabled" + getStackTrace()); //CTEST
      }
  
      public static ConsistencyLevel getIdealConsistencyLevel()
@@ -2056,7 +2056,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setIdealConsistencyLevel(ConsistencyLevel cl)
      {
          conf.ideal_consistency_level = cl;
-+        logger.warn("[CTEST][SET-PARAM] " + "ideal_consistency_level"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "ideal_consistency_level" + getStackTrace()); //CTEST
      }
  
      public static int getRepairCommandPoolSize()
@@ -2099,7 +2099,7 @@ index f78a5b668a..30f9ca286e 100644
          if (conf.automatic_sstable_upgrade != enabled)
              logger.debug("Changing automatic_sstable_upgrade to {}", enabled);
          conf.automatic_sstable_upgrade = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "automatic_sstable_upgrade"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "automatic_sstable_upgrade" + getStackTrace()); //CTEST
      }
  
      public static int maxConcurrentAutoUpgradeTasks()
@@ -2112,7 +2112,7 @@ index f78a5b668a..30f9ca286e 100644
              logger.debug("Changing max_concurrent_automatic_sstable_upgrades to {}", value);
          validateMaxConcurrentAutoUpgradeTasksConf(value);
          conf.max_concurrent_automatic_sstable_upgrades = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "max_concurrent_automatic_sstable_upgrades"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "max_concurrent_automatic_sstable_upgrades" + getStackTrace()); //CTEST
      }
  
      private static void validateMaxConcurrentAutoUpgradeTasksConf(int value)
@@ -2131,7 +2131,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setAuditLoggingOptions(AuditLogOptions auditLoggingOptions)
      {
          conf.audit_logging_options = auditLoggingOptions;
-+        logger.warn("[CTEST][SET-PARAM] " + "audit_logging_options"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "audit_logging_options" + getStackTrace()); //CTEST
      }
  
      public static Config.CorruptedTombstoneStrategy getCorruptedTombstoneStrategy()
@@ -2143,7 +2143,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCorruptedTombstoneStrategy(Config.CorruptedTombstoneStrategy strategy)
      {
          conf.corrupted_tombstone_strategy = strategy;
-+        logger.warn("[CTEST][SET-PARAM] " + "corrupted_tombstone_strategy"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "corrupted_tombstone_strategy" + getStackTrace()); //CTEST
      }
  
      public static boolean getRepairedDataTrackingForRangeReadsEnabled()
@@ -2155,7 +2155,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRepairedDataTrackingForRangeReadsEnabled(boolean enabled)
      {
          conf.repaired_data_tracking_for_range_reads_enabled = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "repaired_data_tracking_for_range_reads_enabled"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "repaired_data_tracking_for_range_reads_enabled" + getStackTrace()); //CTEST
      }
  
      public static boolean getRepairedDataTrackingForPartitionReadsEnabled()
@@ -2167,7 +2167,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRepairedDataTrackingForPartitionReadsEnabled(boolean enabled)
      {
          conf.repaired_data_tracking_for_partition_reads_enabled = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "repaired_data_tracking_for_partition_reads_enabled"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "repaired_data_tracking_for_partition_reads_enabled" + getStackTrace()); //CTEST
      }
  
      public static boolean snapshotOnRepairedDataMismatch()
@@ -2179,7 +2179,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setSnapshotOnRepairedDataMismatch(boolean enabled)
      {
          conf.snapshot_on_repaired_data_mismatch = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "snapshot_on_repaired_data_mismatch"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "snapshot_on_repaired_data_mismatch" + getStackTrace()); //CTEST
      }
  
      public static boolean snapshotOnDuplicateRowDetection()
@@ -2191,7 +2191,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setSnapshotOnDuplicateRowDetection(boolean enabled)
      {
          conf.snapshot_on_duplicate_row_detection = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "snapshot_on_duplicate_row_detection"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "snapshot_on_duplicate_row_detection" + getStackTrace()); //CTEST
      }
  
      public static boolean reportUnconfirmedRepairedDataMismatches()
@@ -2203,7 +2203,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void reportUnconfirmedRepairedDataMismatches(boolean enabled)
      {
          conf.report_unconfirmed_repaired_data_mismatches = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "report_unconfirmed_repaired_data_mismatches"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "report_unconfirmed_repaired_data_mismatches" + getStackTrace()); //CTEST
      }
  
      public static boolean strictRuntimeChecks()
@@ -2219,7 +2219,7 @@ index f78a5b668a..30f9ca286e 100644
      {
          logger.info("Setting use_offheap_merkle_trees to {}", value);
          conf.use_offheap_merkle_trees = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "use_offheap_merkle_trees"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "use_offheap_merkle_trees" + getStackTrace()); //CTEST
      }
  
      public static Function<CommitLog, AbstractCommitLogSegmentManager> getCommitLogSegmentMgrProvider()
@@ -2241,7 +2241,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCheckForDuplicateRowsDuringReads(boolean enabled)
      {
          conf.check_for_duplicate_rows_during_reads = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "check_for_duplicate_rows_during_reads"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "check_for_duplicate_rows_during_reads" + getStackTrace()); //CTEST
      }
  
      public static boolean checkForDuplicateRowsDuringCompaction()
@@ -2253,7 +2253,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setCheckForDuplicateRowsDuringCompaction(boolean enabled)
      {
          conf.check_for_duplicate_rows_during_compaction = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "check_for_duplicate_rows_during_compaction"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "check_for_duplicate_rows_during_compaction" + getStackTrace()); //CTEST
      }
  
      public static int getRepairPendingCompactionRejectThreshold()
@@ -2265,7 +2265,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRepairPendingCompactionRejectThreshold(int value)
      {
          conf.reject_repair_compaction_threshold = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "reject_repair_compaction_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "reject_repair_compaction_threshold" + getStackTrace()); //CTEST
      }
  
      public static int getInitialRangeTombstoneListAllocationSize()
@@ -2277,7 +2277,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setInitialRangeTombstoneListAllocationSize(int size)
      {
          conf.initial_range_tombstone_list_allocation_size = size;
-+        logger.warn("[CTEST][SET-PARAM] " + "initial_range_tombstone_list_allocation_size"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "initial_range_tombstone_list_allocation_size" + getStackTrace()); //CTEST
      }
  
      public static double getRangeTombstoneListGrowthFactor()
@@ -2289,7 +2289,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setRangeTombstoneListGrowthFactor(double resizeFactor)
      {
          conf.range_tombstone_list_growth_factor = resizeFactor;
-+        logger.warn("[CTEST][SET-PARAM] " + "range_tombstone_list_growth_factor"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "range_tombstone_list_growth_factor" + getStackTrace()); //CTEST
      }
  
      public static boolean getAutocompactionOnStartupEnabled()
@@ -2308,7 +2308,7 @@ index f78a5b668a..30f9ca286e 100644
          if (enabled != conf.auto_optimise_inc_repair_streams)
              logger.info("Changing auto_optimise_inc_repair_streams from {} to {}", conf.auto_optimise_inc_repair_streams, enabled);
          conf.auto_optimise_inc_repair_streams = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "auto_optimise_inc_repair_streams"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "auto_optimise_inc_repair_streams" + getStackTrace()); //CTEST
      }
  
      public static boolean autoOptimiseFullRepairStreams()
@@ -2321,7 +2321,7 @@ index f78a5b668a..30f9ca286e 100644
          if (enabled != conf.auto_optimise_full_repair_streams)
              logger.info("Changing auto_optimise_full_repair_streams from {} to {}", conf.auto_optimise_full_repair_streams, enabled);
          conf.auto_optimise_full_repair_streams = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "auto_optimise_full_repair_streams"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "auto_optimise_full_repair_streams" + getStackTrace()); //CTEST
      }
  
      public static boolean autoOptimisePreviewRepairStreams()
@@ -2334,7 +2334,7 @@ index f78a5b668a..30f9ca286e 100644
          if (enabled != conf.auto_optimise_preview_repair_streams)
              logger.info("Changing auto_optimise_preview_repair_streams from {} to {}", conf.auto_optimise_preview_repair_streams, enabled);
          conf.auto_optimise_preview_repair_streams = enabled;
-+        logger.warn("[CTEST][SET-PARAM] " + "auto_optimise_preview_repair_streams"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "auto_optimise_preview_repair_streams" + getStackTrace()); //CTEST
      }
  
      public static int tableCountWarnThreshold()
@@ -2346,7 +2346,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setTableCountWarnThreshold(int value)
      {
          conf.table_count_warn_threshold = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "table_count_warn_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "table_count_warn_threshold" + getStackTrace()); //CTEST
      }
  
      public static int keyspaceCountWarnThreshold()
@@ -2358,7 +2358,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setKeyspaceCountWarnThreshold(int value)
      {
          conf.keyspace_count_warn_threshold = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "keyspace_count_warn_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "keyspace_count_warn_threshold" + getStackTrace()); //CTEST
      }
  
      public static int getConsecutiveMessageErrorsThreshold()
@@ -2370,7 +2370,7 @@ index f78a5b668a..30f9ca286e 100644
      public static void setConsecutiveMessageErrorsThreshold(int value)
      {
          conf.consecutive_message_errors_threshold = value;
-+        logger.warn("[CTEST][SET-PARAM] " + "consecutive_message_errors_threshold"); //CTEST
++        logger.warn("[CTEST][SET-PARAM] " + "consecutive_message_errors_threshold" + getStackTrace()); //CTEST
      }
  
      public static boolean getForceNewPreparedStatementBehaviour()
@@ -2383,7 +2383,7 @@ index f78a5b668a..30f9ca286e 100644
          {
              logger.info("Setting force_new_prepared_statement_behaviour to {}", value);
              conf.force_new_prepared_statement_behaviour = value;
-+            logger.warn("[CTEST][SET-PARAM] " + "force_new_prepared_statement_behaviour"); //CTEST
++            logger.warn("[CTEST][SET-PARAM] " + "force_new_prepared_statement_behaviour" + getStackTrace()); //CTEST
 +        }
 +    }
 +

@@ -35,8 +35,8 @@ class Runner:
     def get_full_report_path(self, suffix):
         all_reports = utils.get_ctest_surefire_report(self.module)
         for report in all_reports:
-                if report.endswith(suffix):
-                    return report
+            if report.endswith(suffix):
+                return report
         return "none"
 
     def traceInTestCode(self, trace):
@@ -99,9 +99,10 @@ class Runner:
             if "[CTEST][GET-PARAM]" in line:
                 line = line[line.find("[CTEST][GET-PARAM]"):]
                 assert line.startswith("[CTEST][GET-PARAM] "), "wrong line: " + line
-                assert line.split(" ")[0] == "[CTEST][GET-PARAM]"
-                assert line.count(" ") == 1, "more than one whitespace in " + line
-                param_name = line.split(" ")[1]
+                comp = line.split(" ")
+                assert comp[0] == "[CTEST][GET-PARAM]"
+                assert len(comp) == 2, "more than one whitespace in " + line
+                param_name = comp[1]
                 if param_name in self.params:
                     is_getter = True
                     self.getter_record.write(method + " " + param_name + "\n")
@@ -109,11 +110,12 @@ class Runner:
             elif "[CTEST][SET-PARAM]" in line:
                 line = line[line.find("[CTEST][SET-PARAM]"):]
                 assert line.startswith("[CTEST][SET-PARAM] "), "wrong line: " + line
-                assert line.split(" ")[0] == "[CTEST][SET-PARAM]"
-                assert line.count(" ") == 2, "more than one whitespace in " + line
-                param_name = line.split(" ")[1]
+                comp = line.split(" ")
+                assert len(comp) == 3, "more than two whitespaces in " + line
+                assert comp[0] == "[CTEST][SET-PARAM]"
+                param_name = comp[1]
                 if param_name in self.params:
-                    if self.aggressive or self.setInTest(line.split(" ")[2]):
+                    if self.aggressive or self.setInTest(comp[2]):
                         is_setter = True
                         self.setter_record.write(method + " " + param_name + "\n")
                         self.setter_record.flush()
@@ -143,7 +145,7 @@ class Runner:
 
     def run_individual_testmethod(self):
         all_test_methods = json.load(open("%s" % (self.run_list)))
-        length = len(all_test_methods)
+        length, idx = len(all_test_methods), 1
         print ("number of all test methods: " + str(length))
 
         old_path = os.getcwd()
@@ -156,8 +158,10 @@ class Runner:
         os.makedirs(out_dir, exist_ok=True)
         os.makedirs(report_dir, exist_ok=True)
 
+
         for method in all_test_methods:
-            print("==================================================================================")
+            print(f"==============={idx} / {length}===================")
+            idx += 1
             assert method.count("#") == 1, "there should be only one #, but actually you have: " + method
 
             method_out = open(out_dir + method + "-log.txt", "w+")
@@ -170,12 +174,16 @@ class Runner:
                 os.environ['CASSANDRA_USE_JDK11'] = 'true'
                 class_name, method_name = method.split('#')
                 cmd = ["ant", "testsome", "-Dtest.name=" + class_name, "-Dtest.methods=" + method_name]
-                print ("ant testsome -Dtest.name="+class_name, " -Dtest.methods="+method_name)
+                print ("ant testsome -Dtest.name=" + class_name, " -Dtest.methods=" + method_name)
             else:
                 cmd = ["mvn", "surefire:test", "-Dtest=" + method]
                 print ("mvn surefire:test -Dtest="+method)
-            child = subprocess.Popen(cmd, stdout=method_out, stderr=method_out)
-            child.wait()
+            try:
+                subprocess.run(cmd, stdout=method_out, stderr=method_out, timeout=60)
+            except subprocess.TimeoutExpired:
+                print(f"{method} running too slow, skip")
+                self.no_report_list.append(method)
+                continue
 
             finish_time_for_this_method = time.time()
             time_elapsed = finish_time_for_this_method - start_time_for_this_method
@@ -186,14 +194,19 @@ class Runner:
             self.time_record.write(method + " " + str(time_elapsed) + "\n")
 
             if pass_or_not:
-                print(method + " success")
+                print("Test: Success")
             else:
-                print(method + " failure")
+                print("Test: Failure")
                 self.failure_list.append(method)
                 continue
 
-            class_name = method.split("#")[0]
-            suffix_filename_to_check = class_name + "-output.txt"
+
+            if self.module == 'cassandra':
+                method_name = method.split("#")[1]
+                suffix_filename_to_check = method_name + ".xml"
+            else:
+                class_name = method.split("#")[0]
+                suffix_filename_to_check = class_name + "-output.txt"
             full_path = self.get_full_report_path(suffix_filename_to_check)
             if full_path == "none":
                 print("no report for " + method)

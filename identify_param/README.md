@@ -1,47 +1,27 @@
+## Prerequisites
+- Java 11
+- Ant 1.10.7
+- Cassandra 4.0
 
-# Identifying Parameters Exercised in Tests
+## How to set up for generate parameters mapping
+Using add_project script:
+- run, `./add-project.sh cassandra`
 
-### Description
+Or, set up manually:
+- clone cassandra, `git clone https://github.com/apache/cassandra.git app/cassandra && cd app/cassandra`
+- checkout commit, `git switch cassandra-4.0`
+- apply logging patches, `git apply ../../ctest-logging.patch`
+- build the project, `CASSANDRA_USE_JDK11=true ant clean && CASSANDRA_USE_JDK11=true ant`
 
-See [Identifying Parameters Exercised in Tests](https://github.com/xlab-uiuc/openctest/tree/main/core#11-identifying-parameters-exercised-in-tests)
+Check setup
+- go to cassandra directory, `cd app/cassandra`
+- run example test command, `CASSANDRA_USE_JDK11=true ant testsome -Dtest.name=org.apache.cassandra.service.GCInspectorTest -Dtest.methods=ensureStaticFieldsHydrateFromConfig`
 
+## Note
+- default config, [link](https://cassandra.apache.org/doc/latest/cassandra/getting_started/configuring.html)
+- run test, [link](https://cassandra.apache.org/_/development/testing.html)
+- the test report is in `/build/test/output`
 
-### Instruction
-
-*First*, clone and build the target project following *Setup  - 2. Target Project* in `../README.md`.
-
-*Second*, run `./identify_param.sh <project>` to generate the mapping. For example, 
-
-```
-./identify_param.sh hadoop-common
-``` 
-
-
-### Result
-
-The mapping file is stored in `results/<project>/param_unset_getter_map.json`. The mapping maps from each parameter to a list of tests which:
-- called configuration API `GET` on this parameter
-- did not call configuration API `SET` which re-assigns/resets the value of this parameter in test code
-
-
-#### Intermediate Result
-
-There are intermediate results generated from `identify_param.sh`. These result will not be used later, but maybe helpful as a reference.
-
-`results/hadoop-common/logs` shows "which test called `GET` or `SET` on which parameter".  For example, `getter-record` shows each test and the parameters which it called `GET` on, i.e.
-```
-test1 fs.defaultFS
-test2 hadoop.security.dns.log-slow-lookups.enabled
-test3 hadoop.security.dns.log-slow-lookups.threshold.ms
-```
-This means 
-- `test1 GET fs.defaultFS`
-- `test2 GET hadoop.security.dns.log-slow-lookups.enabled`
-- `test3 GET hadoop.security.dns.log-slow-lookups.threshold.ms`
-
-### Directory Structure
-
-- add_project.sh: install the project with instrumented configuration API
-- identify_param.sh: identify the parameters exercised by each test by calling `runner.py` and `collector.py`
-- runner.py: run each test and generate the log of instrumented configuration API
-- collector.py: parse the log and identify the parameters
+## Challenges
+- Cassandra uses ant to manage the project, therefore, need to modify the given python scripts quiet a lot to run the test in Cassandra.
+- Cassandra doesn't have an uniform get and set API, all get and set methods for each individual config are defined in the `DatabaseDescriptor.java` file, which is a pain to add all the logging.

@@ -125,12 +125,13 @@ class Runner:
                             self.setter_record.flush()
                             setter.add(full_name)
 
-        if len(getter):
-            print(method + " is a getter")
-            self.getter_list.append(method)
-        if len(setter):
-            print(method + " is a setter")
-            self.setter_list.append(method)
+        if len(getter) or len(setter):
+            if len(getter):
+                print(method + " is a getter")
+                self.getter_list.append(method)
+            if len(setter):
+                print(method + " is a setter")
+                self.setter_list.append(method)
         else:
             self.other_list.append(method)
 
@@ -192,11 +193,12 @@ class Runner:
             finish_time_for_this_method = time.time()
             time_elapsed = finish_time_for_this_method - start_time_for_this_method
             print("time elapsed: " + str(time_elapsed))
+            self.time_record.write(method + " " + str(time_elapsed) + "\n")
+            self.time_record.flush()
+
             method_out.seek(0)
             pass_or_not = self.test_pass_or_not(method_out.read())
             method_out.close()
-            self.time_record.write(method + " " + str(time_elapsed) + "\n")
-
             if pass_or_not:
                 print("Test: Success")
             else:

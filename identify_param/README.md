@@ -3,7 +3,7 @@
 - Ant 1.10.7
 - Cassandra 4.0
 
-## How to set up for generate parameters mapping
+## How to set up cassadra
 Using add_project script:
 - run, `./add-project.sh cassandra`
 - check setup, `cd app/cassandra && CASSANDRA_USE_JDK11=true ant testsome -Dtest.name=org.apache.cassandra.service.GCInspectorTest -Dtest.methods=ensureStaticFieldsHydrateFromConfig`
@@ -14,6 +14,10 @@ Or, set up manually:
 - apply logging patches, `git apply ../../ctest-logging.patch`
 - build the project, `CASSANDRA_USE_JDK11=true ant`
 - check setup, `CASSANDRA_USE_JDK11=true ant testsome -Dtest.name=org.apache.cassandra.service.GCInspectorTest -Dtest.methods=ensureStaticFieldsHydrateFromConfig`
+
+## How to gernerate parameter mapping
+- to identify parameters, `python3 runner.py cassandra`
+- to generate mapping based on identified parameters, `python3 collector.py`
 
 ## Note
 - default config, [link](https://cassandra.apache.org/doc/latest/cassandra/getting_started/configuring.html)

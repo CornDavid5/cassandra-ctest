@@ -3,3 +3,4 @@ __pycache__
 getter-record
 setter-record
 time-record
+app/*

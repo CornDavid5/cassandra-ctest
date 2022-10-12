@@ -37,7 +37,7 @@ class Runner:
         for report in all_reports:
             if report.endswith(suffix):
                 return report
-        return "none"
+        return None
 
     def traceInTestCode(self, trace):
         if "Test" in trace:
@@ -81,19 +81,20 @@ class Runner:
         return False
 
     def setInTest(self, stacktrace):
+        if self.module == 'cassandra':
+            if 'daemonInitialization' in stacktrace or 'toolInitialization' in stacktrace:
+                return False
+
         traces = stacktrace.split("\t")
         for trace in traces:
             if self.skipTrace(trace):
                 continue
-            else:
-                if self.traceInTestCode(trace):
-                    return True
-                else:
-                    return False
+            elif self.traceInTestCode(trace):
+                return True
+        return False
 
     def parse(self, lines, method):
-        is_getter = False
-        is_setter = False
+        getter, setter = set(), set()
         for line in lines:
             line = line.strip("\n")
             if "[CTEST][GET-PARAM]" in line:
@@ -104,9 +105,11 @@ class Runner:
                 assert len(comp) == 2, "more than one whitespace in " + line
                 param_name = comp[1]
                 if param_name in self.params:
-                    is_getter = True
-                    self.getter_record.write(method + " " + param_name + "\n")
-                    self.getter_record.flush()
+                    full_name = method + " " + param_name + "\n"
+                    if full_name not in getter:
+                        self.getter_record.write(full_name)
+                        self.getter_record.flush()
+                        getter.add(full_name)
             elif "[CTEST][SET-PARAM]" in line:
                 line = line[line.find("[CTEST][SET-PARAM]"):]
                 assert line.startswith("[CTEST][SET-PARAM] "), "wrong line: " + line
@@ -116,17 +119,18 @@ class Runner:
                 param_name = comp[1]
                 if param_name in self.params:
                     if self.aggressive or self.setInTest(comp[2]):
-                        is_setter = True
-                        self.setter_record.write(method + " " + param_name + "\n")
-                        self.setter_record.flush()
+                        full_name = method + " " + param_name + "\n"
+                        if full_name not in setter:
+                            self.setter_record.write(full_name)
+                            self.setter_record.flush()
+                            setter.add(full_name)
 
-        if is_getter or is_setter:
-            if is_getter:
-                print(method + " is a getter")
-                self.getter_list.append(method)
-            if is_setter:
-                print(method + " is a setter")
-                self.setter_list.append(method)
+        if len(getter):
+            print(method + " is a getter")
+            self.getter_list.append(method)
+        if len(setter):
+            print(method + " is a setter")
+            self.setter_list.append(method)
         else:
             self.other_list.append(method)
 
@@ -179,7 +183,7 @@ class Runner:
                 cmd = ["mvn", "surefire:test", "-Dtest=" + method]
                 print ("mvn surefire:test -Dtest="+method)
             try:
-                subprocess.run(cmd, stdout=method_out, stderr=method_out, timeout=60)
+                subprocess.run(cmd, stdout=method_out, stderr=method_out, timeout=40)
             except subprocess.TimeoutExpired:
                 print(f"{method} running too slow, skip")
                 self.no_report_list.append(method)
@@ -200,7 +204,6 @@ class Runner:
                 self.failure_list.append(method)
                 continue
 
-
             if self.module == 'cassandra':
                 method_name = method.split("#")[1]
                 suffix_filename_to_check = method_name + ".xml"
@@ -208,7 +211,7 @@ class Runner:
                 class_name = method.split("#")[0]
                 suffix_filename_to_check = class_name + "-output.txt"
             full_path = self.get_full_report_path(suffix_filename_to_check)
-            if full_path == "none":
+            if not full_path:
                 print("no report for " + method)
                 self.no_report_list.append(method)
             else:

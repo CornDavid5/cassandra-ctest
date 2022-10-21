@@ -1,9 +1,6 @@
-import glob
 import constant
 import utils
-import xml.etree.ElementTree as ET
 import os
-import sys
 import subprocess
 import json
 import time

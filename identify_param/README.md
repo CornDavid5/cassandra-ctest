@@ -16,10 +16,10 @@ You need to put all generated files into the `results/cassandra` directory.
 ## How to set up cassadra
 Using bash script:
 - run, `./setup_cassandra.sh`
-- check setup, `cd ../app/cassandra && CASSANDRA_USE_JDK11=true ant testsome -Dtest.name=org.apache.cassandra.service.GCInspectorTest -Dtest.methods=ensureStaticFieldsHydrateFromConfig`
+- check setup, `cd app/cassandra && CASSANDRA_USE_JDK11=true ant testsome -Dtest.name=org.apache.cassandra.service.GCInspectorTest -Dtest.methods=ensureStaticFieldsHydrateFromConfig`
 
 Or, set up manually:
-- clone cassandra, `git clone https://github.com/apache/cassandra.git ../app/cassandra && cd ../app/cassandra`
+- clone cassandra, `git clone https://github.com/apache/cassandra.git app/cassandra && cd app/cassandra`
 - checkout commit, `git checkout 4e1d31e`
 - apply logging patches, `git apply ../../ctest-logging.patch`
 - build the project, `CASSANDRA_USE_JDK11=true ant`

@@ -21,7 +21,7 @@ Using bash script:
 Or, set up manually:
 - clone cassandra, `git clone https://github.com/apache/cassandra.git app/cassandra && cd app/cassandra`
 - checkout commit, `git checkout 4e1d31e`
-- apply logging patches, `git apply ../../ctest-logging.patch`
+- apply logging patch, `git apply ../../ctest-logging.patch`
 - build the project, `CASSANDRA_USE_JDK11=true ant`
 - check setup, `CASSANDRA_USE_JDK11=true ant testsome -Dtest.name=org.apache.cassandra.service.GCInspectorTest -Dtest.methods=ensureStaticFieldsHydrateFromConfig`
 

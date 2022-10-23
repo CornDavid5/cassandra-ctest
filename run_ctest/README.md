@@ -1,10 +1,9 @@
 # Run Ctest
-The module is used to run the ctest against cassandra.
+The module is used to run the ctest against Cassandra 4.0.
 
 ## Prerequisites
 - Java 11
 - Ant 1.10.7
-- Cassandra 4.0
 
 ## How to set up cassandra
 Using bash script:

@@ -6,7 +6,7 @@ p_input = {
     # name of the project, i.e. hadoop-common, hadoop-hdfs
     "project": "cassandra", # string
     # path to param -> tests json mapping
-    "mapping_path": "../identify_param/results/cassandra/param_unset_getter_map.json", # string
+    "mapping_path": "param_unset_getter_map.json", # string
     # input directory hosting configuration files to be test, target-project-format specific
     "conf_file_dir": "test_cassandra", # string
     # display the terminal output live, without saving any results

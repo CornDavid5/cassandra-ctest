@@ -484,3 +484,6 @@ index a8d4695cb0..54720cec46 100644
              this.parent = Objects.requireNonNull(parent);
              this.oldName = Objects.requireNonNull(oldName);
              this.newName = Objects.requireNonNull(newName);
+diff --git a/test/conf/ctest-injection.yaml b/test/conf/ctest-injection.yaml
+new file mode 100644
+index 0000000000..e69de29bb2

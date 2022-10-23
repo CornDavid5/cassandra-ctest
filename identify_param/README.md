@@ -1,10 +1,9 @@
 # Identify Parameters
-The module is used to generate the pair of configuration parameters and test methods.
+The module is used to generate the pair of configuration parameters and test methods against Cassandra 4.0.
 
 ## Prerequisites
 - Java 11
 - Ant 1.10.7
-- Cassandra 4.0
 
 ## How to generate required files
 We provide two python scripts to generate required files:
